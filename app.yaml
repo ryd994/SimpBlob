@@ -1,30 +1,50 @@
-application: rensimpleview
-version: 0b
+application: simpview
+version: 0c
 runtime: python27
 api_version: 1
 threadsafe: true
 
 handlers:
-- url: /
-  static_files: static/main.html
-  upload: static/main.html
+ - url: /
+   static_files: static/html/main.html
+   upload: static/html/main.html
+   
+ - url: /([^/.]+)\.([^/.]+)
+   static_files: static/\2/\1.\2
+   upload: static/.*
 
-- url: /upload
-  script: Upload.app
-  secure: optional
+ - url: /upload
+   static_files: static/html/upload.html
+   upload: static/html/upload.html
+   login: required
 
-- url: /download
-  script: DownloadRedirector.app
-  secure: optional
+ - url: /_ah/login_required
+   script: login.app
 
-- url: /download/([^/]+)?/([^/]+)?
-  script: DownloadHandler.app
-  secure: optional
+ - url: /banner
+   script: banner.app
 
-- url: /d/([^/]+)?
-  script: DownloadByName.app
-  secure: optional
+ - url: /uploadbg
+   script: uploadbg.app
 
-- url: /query
-  script: QueryByName.app
-  secure: optional
+ - url: /download
+   script: DownloadRedirector.app
+
+ - url: /download/[^/]+/[^/]+
+   script: DownloadHandler.app
+
+ - url: /query
+   script: QueryByName.app
+
+
+builtins:
+ - appstats: on
+
+error_handlers:
+ - file: static/html/default_error.html
+
+ - error_code: over_quota
+   file: static/html/over_quota.html
+
+ - error_code: dos_api_denial
+   file: static/html/dos_api_denial.html

@@ -15,15 +15,3 @@ indexes:
   - name: creation
     direction: desc
   - name: filename
-
-- kind: __BlobInfo__
-  properties:
-  - name: filename
-  - name: creation
-    direction: desc
-
-- kind: __BlobInfo__
-  properties:
-  - name: filename=
-  - name: creation
-    direction: desc

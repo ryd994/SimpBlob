@@ -14,15 +14,40 @@ class QueryByName(webapp2.RequestHandler):
 #    length = len(name)
 #    name2 = name[:length-1]+chr(ord(name[length-1:length])+1)
 #    query.filter('filename >=',str(name)).filter('filename <',str(name2)).order("filename").order("-creation")
-    self.response.out.write('''<head>\n\r<title>Search Result</title>\n\r</head>\n\r<body>\n\r<table border="1" width="100%">\n\r<tr><th>Name</th><th>Create Time</th><th>Key</th></tr><br>\n\r''')
+    self.response.out.write('\
+<head>\
+  <title>Search Result</title>\
+</head>\
+<body>\
+  <table border="1" width="100%">\
+    <tr>\
+      <th>Name</th>\
+      <th>Create Time</th>\
+      <th>Key</th>\
+    </tr>')
     count = 0
     for blob in query:
       if str(blob.filename).lower().find(name.lower())!=-1:
-        self.response.out.write("<tr><th>"+str(blob.filename)+"</th><td>"+str(blob.creation)+'</td><td><textarea rows="1" cols="23" readonly="1" style="resize: none">'+str(blob.key())+'</textarea></td><td><a href="'+'../download/%s/' % blob.key()+ blob.filename+'">Download</a></td></tr><br>\n\r')
         count = count+1
+        self.response.out.write('\
+    <tr>\
+      <th>%(filename)s</th>\
+      <td>%(creation)s</td>\
+      <td><textarea rows="1" cols="23" readonly="1" style="resize: none" onclick="this.select();">%(key)s</textarea></td>\
+      <td><a href="../download/%(key)s/%(filename)s">Download</a></td>\
+    </tr>'%{"filename": blob.filename,\
+            "creation": blob.creation,\
+            "key": blob.key(),\
+            "count": count,\
+           })
     if count==0:
-      self.response.out.write("<tr><td colspan='3'>No such file found!</td></tr>")
-    self.response.out.write("</table>\n\r</body>")
+      self.response.out.write('\
+    <tr>\
+      <td colspan="3">No such file found!</td>\
+    </tr>')
+    self.response.out.write('\
+  </table>\
+</body>')
 
     
 app = webapp2.WSGIApplication([('/query', QueryByName)],
