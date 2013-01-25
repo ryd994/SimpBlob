@@ -1,10 +1,30 @@
-application: SimpBlob
-version: 0
+application: rensimpleview
+version: 0b
 runtime: python27
 api_version: 1
 threadsafe: true
 
 handlers:
-- url: /.?
-  script: Blob.app
+- url: /
+  static_files: static/main.html
+  upload: static/main.html
+
+- url: /upload
+  script: Upload.app
+  secure: optional
+
+- url: /download
+  script: DownloadRedirector.app
+  secure: optional
+
+- url: /download/([^/]+)?/([^/]+)?
+  script: DownloadHandler.app
+  secure: optional
+
+- url: /d/([^/]+)?
+  script: DownloadByName.app
+  secure: optional
+
+- url: /query
+  script: QueryByName.app
   secure: optional
