@@ -9,4 +9,4 @@ In Google App Engine Launcher, click File -> add existing application -> choose 
 
 If you want to run it on GAE, edit the app.yaml and upload to your application.
 
-Notice there are only fundamental up/download fuctionality only. No user control, nor backgroung management, you can't even delete an uploaded file without resetting the whole application.
+Notice there are only fundamental up/download fuctionality only. No user control, nor file management, you can't even delete an uploaded file without resetting the whole application.
